@@ -38,6 +38,9 @@ func main() {
     api.HandleFunc("/stats/{shortCode}", urlHandler.GetURLStats).Methods("GET")
 
     router.HandleFunc("/{shortCode}", urlHandler.RedirectURL).Methods("GET")
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    http.ServeFile(w, r, "./web/index.html")
+	}).Methods("GET")
     router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
         w.WriteHeader(http.StatusOK)
         w.Write([]byte("OK"))
