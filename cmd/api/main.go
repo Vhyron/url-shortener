@@ -7,6 +7,7 @@ import (
     "os"
     "github.com/Vhyron/url-shortener/internal/handlers"
     "github.com/Vhyron/url-shortener/internal/repository"
+	"github.com/Vhyron/url-shortener/internal/middleware"
     "github.com/gorilla/mux"
     "github.com/joho/godotenv"
 )
@@ -28,6 +29,8 @@ func main() {
 
     urlHandler := handlers.NewURLHandler(repo, baseURL)
     router := mux.NewRouter()
+	router.Use(middleware.Logger)
+	router.Use(middleware.CORS)
 
     api := router.PathPrefix("/api").Subrouter()
     api.HandleFunc("/shorten", urlHandler.CreateShortURL).Methods("POST")
